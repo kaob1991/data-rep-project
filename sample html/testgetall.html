@@ -1,0 +1,140 @@
+<html>
+
+    <head>
+
+        <title>
+            test get all
+        </title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    </head>
+
+<body>
+    <script>
+        function getAll(callback){ 
+            $.ajax({ 
+                "url": "http://andrewbeatty1.pythonanywhere.com/books",
+                "method": "GET", 
+                "data": "", 
+                "dataType": "JSON", 
+                "success": function (result) {
+                     //console.log(result);
+                     callback(result)
+                },
+                "error": function (xhr, status, error) { 
+                    console.log("error:" + status + "msg:" + error); 
+                    } 
+            }); 
+        } 
+        function createBook(book, callback){
+            //console.log(JSON.stringify(book));
+            $.ajax({
+                "url":"http://andrewbeatty1.pythonanywhere.com/books",
+                "method":"POST",
+                "data":JSON.stringify(book),
+                "dataType":"JSON",
+                contentType:"application/json; charset=utf-8",
+                "success":function(result){
+                    console.log(result);
+                    //callback(result) 
+                },
+                "error":function(xhr,status,error)
+                {console.log("error: "+status+" msg:"+error);
+                }
+        });
+    }
+        function updateBook(book,callback){
+            $.ajax({
+                "url":"http://andrewbeatty1.pythonanywhere.com/books/"+encodeURI(book.id),
+                "method":"PUT",
+                "data":JSON.stringify(book),
+                "dataType":"JSON",
+                contentType:"application/json; charset=utf-8",
+                "success":function(result){
+                    console.log(result);
+                    //callback(result) 
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
+        
+        function processUpdateResponse(result){
+            console.log(result)
+        }
+        book={id:213,"Author":"Adrian Newey", "Title":"How to build a racecar"} 
+        updateBook(book,processUpdateResponse)
+
+
+        function deleteBook(id, callback){
+            $.ajax({
+                "url":"http://andrewbeatty1.pythonanywhere.com/books/"+id,
+                "method":"DELETE",
+                "data":"",
+                "dataType":"JSON",
+                contentType:"application/json; charset=utf-8",
+                "success":function(result){
+                    console.log(result);
+                    //callback(result) 
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
+
+        function processCreateresponse(result){
+            console.log(result)
+            }
+        
+        //book={"Title":"test","Author":"kt","Price":230000000} 
+        //createBook(book,processCreateresponse) 
+
+        function processDeleteResponse(result){
+            console.log("in process delete")
+            console.log(result)
+        }
+        deleteBook(202,processUpdateResponse)
+
+        function processGetAll(result){
+            console.log ("in process")
+            console.log(result)
+    }
+    getAll(processGetAll)
+</script>
+
+</html>
+
+
+
+How would you integrate this with lab06.02
+11. So we have sample code in the test section, comment out the function calls and
+you can include this file at the top of
+the lab06.02, then put the calls into the appropriate places.
+12.I have made a html called lab06.3b-book-interface.html
+13.You should callgetAll at the bottom of the page to initialise the table
+14.In the processGetAll use a for loop to get each book individually, you would use this
+with the add to table to add them to the table.
+15.You will havedo a similar conversion in thedoCreate, do Update and doDelete.
+16. Remember there may be multiple people working on this data.
+
+
+
+function processGetAllResponse(result){
+    console.log("in process")
+    //console.log(result)
+    for(bookofresult){
+        //console.log(book)
+        // issue the format of the book object is different from lab06.02
+        // there are two solutions change the book object in lan06.02 to have capitals 
+        // or convert
+        displayBook={}
+        displayBook.id=book.id
+        displayBook.author=book.Author
+        displayBook.title=book.Title
+        displayBook.price=book.Price
+        // you can now pass it to addBookToTable
+        console.log(displayBook)
+    }
+}
