@@ -4,11 +4,11 @@ Main project as part of data representation module at ATU
 
 Project requirements:
 
-- flask server
-- restful api with crud operations 
-- dao []
-- database tables x 2 min
-- web interface using ajax calls
+- flask server X
+- restful api with crud operations X
+- dao X
+- database tables X
+- web interface using ajax calls  not working correctly yet
 
 extra marks:
 
