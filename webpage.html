@@ -1,0 +1,390 @@
+
+
+
+<!doctype html>
+<html>
+<head>
+
+    <title> F1 Drivers </title>
+
+    <!-- This section names the document, and sets the encoding standard and document width-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <!-- importing the scripts required-->
+    <script src="https://d3js.org/d3.v7.min.js">
+    
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  </head>
+</head>
+
+<body style="background-color:rgb(253, 246, 246);">
+    <!-- Header images and buttons -->
+      <img src = "Images/f1logo.png">
+     <!-- <a href = "page1.html"><img src = "Images/header1.jpg" style="width:200px;height:90px;"> </a> -->
+      <!--<a href = "page2.html"><img src = "Images/header2.jpg" style="width:200px;height:90px;"> </a> -->
+      <!-- <a href = "page3.html"><img src = "Images/header3.jpg" style="width:200px;height:90px;"> </a> -->
+      <img src = "Images/f1logo.png">
+      <img src = "Images/f1logo.png">
+      <img src = "Images/f1logo.png">
+
+
+<!-- loginform for authentication-->
+      <form>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">username</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <div id="emailHelp" class="form-text"></div>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="mb-3 form-check">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+<!-- Get nicer button from Bootstrap-->
+
+<div><button id = "showCreateButton" onclick="showCreate()"> Add a Driver </button><br/><br/></div>
+
+<div>
+      
+    <table border = "1" id = "driverTable">
+      
+      <tr>
+        <th> id </th>
+        <th>Driver Number</th>
+        <th> Last Name</th>
+        <th>First Name</th>
+        <th>Nationality</th>
+        <th> Current Team</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+      
+      
+<!-- This section missing out of his code-->
+      <tr id = "1">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td> <button onclick="showUpdate(this)">Update</button></td>
+        <td><button onclick = "doDelete(this)">Delete</button></td>
+      </tr>
+    </table>
+   <br/>
+  </div>
+
+  <div id = "createUpdateForm" style = "display:none">
+    <h2>
+      <span id = "createLabel"> Create new</span>
+      <span id = "updateLabel" style = "display:none"> Update this</span> driver
+    </h2>
+    
+    id<input type = "text" name = "id"></br>
+
+    Driver No<input type = "text" name = "DriverNo"></br>
+    Last Name<input type = "text" name = "LastName"></br>
+    First Name<input type = "text" name = "FirstName"></br>
+    Nationality<input type = "text" name = "Nationality"></br>
+    Current Team<input type = "text" name = "CurrentTeam"></br>
+    
+
+    <!--This section is fine -->
+    <span><button id = "button-doCreate" onclick="doCreate()"> Create</button></span>
+    <span><button id = "button- doUpdate" onclick = "doUpdate()">Update</button></span>
+
+    <script>
+        function showCreate(){
+          document.getElementById("createUpdateForm").style.display= "block"
+          document.getElementById("showCreateButton").style.display = "none"
+          document.getElementById("button-doCreate").style.display = "block"
+          document.getElementById("button-doUpdate").style.display = "none"
+          document.getElementById("createLabel").style.display = "inline"
+          document.getElementById("updateLabel").style.display = "none"
+          document.getElementById("driverTable").style.display= "none"
+    
+    
+        }
+        
+       function showViewAll(){
+          document.getElementById('showCreateButton').style.display="block"
+          document.getElementById('driverTable').style.display="block"
+          document.getElementById('createUpdateForm').style.display="none"
+        }
+        function showUpdate(buttonElement){
+          document.getElementById("createUpdateForm").style.display= "block"
+          document.getElementById("showCreateButton").style.display = "none"
+          document.getElementById("button-doCreate").style.display = "none"
+          document.getElementById("button-doUpdate").style.display = "block"
+          document.getElementById("createLabel").style.display = "none"
+          document.getElementById("updateLabel").style.display = "inline"
+          document.getElementById("driverTable").style.display= "none"
+    
+          var rowElement = buttonElement.parentNode.parentNode
+          
+          var driver = getDriverFromRow(rowElement)
+          populateFormWithDriver(driver)
+        }
+    
+    
+    
+        function doCreate(){
+                var form = document.getElementById('createUpdateForm')
+        
+                var driver = {}
+               
+                driver.DriverNo = form.querySelector('input[name="DriverNo"]').value
+                driver.LastName = form.querySelector('input[name="LastName"]').value
+                driver.FirstName = form.querySelector('input[name="FirstName"]').value
+                driver.Nationality = form.querySelector('input[name="Nationality"]').value
+                driver.CurrentTeam = form.querySelector('input[name="CurrentTeam"]').value
+                               
+                console.log(JSON.stringify(driver))
+                createDriverAjax(driver)
+                
+                
+            }
+            
+        function doUpdate(){
+        var driver = getDriverFromForm();
+        //console.log(book)
+        var rowElement= document.getElementById(driver.id);
+        setDriverInRow(rowElement,driver);
+        
+        clearForm();
+        showViewAll();
+        
+      }
+      
+        function doDelete(buttonElement){
+        //console.log("in delete")
+        var tableElement = document.getElementById("driverTable");
+        var rowElement = r.parentNode.parentNode;
+        var index = rowElement.rowIndex;
+        deleteDriverAjax(rowElement.getAttribute("id"));
+        tableElement.deleteRow(index);
+    
+    
+    
+      }
+    
+    
+        function addDriverToTable(driver){
+              var tableElement = document.getElementById("driverTable")
+              var rowElement= tableElement.insertRow(-1)
+              rowElement.setAttribute("id",driver.id)
+              var cell1 = rowElement.insertCell(0);
+              cell1.innerHTML = driver.id
+              var cell2 = rowElement.insertCell(1);
+              cell2.innerHTML = driver.DriverNo
+              var cell3 = rowElement.insertCell(2);
+              cell3.innerHTML = driver.LastName
+              var cell4 = rowElement.insertCell(3);
+              cell4.innerHTML = driver.FirstName
+              var cell5 = rowElement.insertCell(4);
+              cell5.innerHTML = driver.FirstName
+              var cell6 = rowElement.insertCell(5);
+              cell6.innerHTML = driver.FirstName
+              var cell7 = rowElement.insertCell(6);
+              cell7.innerHTML = '<button onclick = "showUpdate(this)">Update</button>'
+              var cell8 = rowElement.insertCell(7);
+              cell8.innerHTML = '<button onclick = "doDelete(this)">Delete</button>'
+              
+            }
+            
+            
+        function clearForm(){
+            var form = document.getElementById("createUpdateForm")
+    
+            //form.querySelector('input[name = "id"]').disabled= false
+            //form.querySelector('input[name = "id"]').value = ''
+            form.querySelector('input[name = "DriverNo"]').value = ''
+            form.querySelector('input[name = "LastName"]').value = ''
+            form.querySelector('input[name = "FirstName"]').value = ''
+            form.querySelector('input[name = "Nationality"]').value = ''
+            form.querySelector('input[name = "CurrentTeam"]').value = ''
+    
+        }
+        
+        
+        function getDriverFromRow(rowElement){
+          var driver = {}
+          driver.id  = rowElement.getAttribute('id')
+          driver.DriverNo = rowElement.cells[1].firstChild.textContent
+          driver.LastName = rowElement.cells[2].firstChild.textContent
+          driver.FirstName = rowElement.cells[3].firstChild.textContent
+          driver.Nationality = rowElement.cells[4].firstChild.textContent
+          driver.CurrentTeam = rowElement.cells[5].firstChild.textContent
+          
+          //book.price = parseInt(rowElement.cells[3].firstChild.textContent,10)
+          return driver
+        }
+        
+        function setDriverInRow(rowElement,driver){
+          rowElement.cells[0].firstChild.textContent = driver.id
+          rowElement.cells[1].firstChild.textContent = driver.DriverNo
+          rowElement.cells[2].firstChild.textContent = driver.LastName
+          rowElement.cells[3].firstChild.textContent = driver.FirstName
+          rowElement.cells[3].firstChild.textContent = driver.Nationality
+          rowElement.cells[3].firstChild.textContent = driver.CurrentTeam
+
+    
+          
+        }
+        
+        function populateFormWithDriver(driver){
+          var form = document.getElementById("createUpdateForm")
+          form.querySelector('input[name = "id"]').disabled= true
+          form.querySelector('input[name = "id"]').value = driver.id
+          form.querySelector('input[name = "DriverNo"]').value =  driver.DriverNo
+          form.querySelector('input[name = "LastName"]').value = driver.LastName
+          form.querySelector('input[name = "FirstName"]').value = driver.FirstName
+          form.querySelector('input[name = "FirstName"]').value = driver.Nationality
+          form.querySelector('input[name = "FirstName"]').value = driver.CurrentTeam
+
+          return driver
+          
+        }
+        
+        
+    function getDriverFromForm(){
+          var form = document.getElementById("createUpdateForm")
+    
+          var driver = {}
+          driver.id = form.querySelector('input[name = "id"]').value
+          driver.DriverNo = form.querySelector('input[name = "DriverNo"]').value
+          driver.LastName = form.querySelector('input[name = "LastName"]').value
+          driver.FirstName = form.querySelector('input[name = "FirstName"]').value
+          driver.Nationality = form.querySelector('input[name = "Nationality"]').value
+          driver.CurrentTeam = form.querySelector('input[name = "CurrentTeam"]').value
+
+
+
+
+          // book.price = parseInt(form.querySelector('input[name="price"]').value,10)
+          console.log(JSON.stringify(driver))
+          return driver
+        }
+        
+    
+      
+        // -----------------AJAX queries------------------------
+    
+     function getAllAjax(){
+            $.ajax({
+                "url": "/drivers",
+                "method":"GET",
+                "data":"",
+                "dataType": "JSON",
+                "success":function(result){
+                    for (driver of result){
+                        addDriverToTable(driver);
+                    }
+                    
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+    
+        }
+        function createDriverAjax(driver){
+            console.log(JSON.stringify(driver));
+            $.ajax({
+                "url": "/drivers",
+                "method":"POST",
+                "data":JSON.stringify(driver),
+                "dataType": "JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                    //console.log(result);
+                    driver.id = result.id
+                    addDriverToTable(driver)
+                    clearForm()
+                    showViewAll()
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
+        function updateDriverAjax(driver){
+            console.log(JSON.stringify(driver));
+            $.ajax({
+                "url": "/drivers/"+encodeURI(driver.LastName),
+                "method":"PUT",
+                "data":JSON.stringify(driver),
+                "dataType": "JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                   // console.log(result);
+                      
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
+        function deleteDriverAjax(id){
+            
+            //console.log(JSON.stringify('deleting '+id));
+            $.ajax({
+                "url": "/drivers/"+encodeURI(id),
+                "method":"DELETE",
+                "data":"",
+                "dataType": "JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                    //console.log(result);
+                      
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
+        getAllAjax();
+      
+        
+    
+    
+        
+    
+    
+    
+    
+          
+    
+        
+    
+    
+     
+    
+    
+    
+    
+    
+      
+        
+      </script>
+      
+    </html>
+    
+
+//<script>
+   // function init(){
+
+
+   // }
+
+   // init()
+//</script>      
