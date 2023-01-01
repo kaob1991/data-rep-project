@@ -1,5 +1,6 @@
 # data-rep-project
 Main project as part of the Data Representation module at ATU
+
 Author: Katie O'Brien G00398250
 
 This project is in partial submission for the H.Dip in Data Analytics in Computing
