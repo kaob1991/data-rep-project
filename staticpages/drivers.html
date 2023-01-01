@@ -1,7 +1,5 @@
 
 
-
-
 <html>
 <head>
 
@@ -152,7 +150,7 @@ h2{border-style: solid; border-color: crimson; background-color: blanchedalmond;
 
 </div>
 
-<!-- This section missing out of his code--> 
+
    
 
 
@@ -196,18 +194,18 @@ h2{border-style: solid; border-color: crimson; background-color: blanchedalmond;
         return driver
     }
     
-    
+    // This gets the data from the form and updates the server
     function doUpdate(){
       driver = getDriverFromForm()
       updateServer(driver)
       
     }
-
+// This cancels a form without submitting
     function doCancel(){
       showDisplay()
       clearForm()
     }
-   
+  // This updates the server- note the url is hardcoded. For some reason it wasn't working when i used a global url variable
     function updateServer(driver){
       $.ajax({
         url:"http://127.0.0.1:5000/drivers/" + driver.id,
@@ -230,7 +228,7 @@ h2{border-style: solid; border-color: crimson; background-color: blanchedalmond;
       }
       )
     }
-
+// This updates a table row
     function updateTableRow(driver){
       rowElement= document.getElementById(driver.id)
       rowElement.cells[1].firstChild.textContent = driver.DriverNo
@@ -240,7 +238,7 @@ h2{border-style: solid; border-color: crimson; background-color: blanchedalmond;
       rowElement.cells[5].firstChild.textContent = driver.CurrentTeam
     }
 
-    
+    //This populates the form when updating it
     
     function populateForm(driver){
       var form = document.getElementById("createUpdateForm")
@@ -254,7 +252,7 @@ h2{border-style: solid; border-color: crimson; background-color: blanchedalmond;
       
     }
     
-
+// This clears the form after inputting a driver
     function clearForm(){
       var form = document.getElementById("createUpdateForm")
       form.querySelector('input[name = "id"]').value = ''
@@ -267,7 +265,7 @@ h2{border-style: solid; border-color: crimson; background-color: blanchedalmond;
 
     }
 
-
+// This creates a driver and sends it to the server, and on to the database
     function doCreate(){
       driver = getDriverFromForm()
 
@@ -291,7 +289,7 @@ h2{border-style: solid; border-color: crimson; background-color: blanchedalmond;
     }
 
 
-    
+    // This deletes a row from the server and the database
 
     function doDelete(thisElem){
       var tableElement = document.getElementById("driverTable");
@@ -318,7 +316,7 @@ h2{border-style: solid; border-color: crimson; background-color: blanchedalmond;
 
 
   }
-  
+ // This populates the table displayed on the webpage 
 
 function populateTable(){
   $.ajax({
@@ -337,7 +335,7 @@ function populateTable(){
         });
 
     }
-
+// This gets a driver from the form
     function getDriverFromForm(){
       var form = document.getElementById("createUpdateForm")
       driver = {}
@@ -351,7 +349,7 @@ function populateTable(){
       return driver
     }
 
-
+// This adds a driver to the table
 
     function addDriverToTable(driver){
           tableElement = document.getElementById("driverTable")
@@ -375,7 +373,7 @@ function populateTable(){
           cell8.innerHTML = '<button onclick = "doDelete(this)" class = "button doDelete">Delete</button>'
           
         }
-
+// This calls populate table so when the page loads the data from the database is already there
         populateTable()
         
     
